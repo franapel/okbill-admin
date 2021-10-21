@@ -55,6 +55,7 @@ function getTimeAndMid(dateString) {
 }
 
 function getLatestTableEvent(table_id, history) {
+    if (!history) return {}
     const tableHistory = history.filter(tableEvent => tableEvent.table_id === table_id)
     let lastEvent = tableHistory[0]
     tableHistory.forEach(tableEvent => {
