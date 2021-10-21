@@ -3,7 +3,7 @@ import { Admin, Resource, ListGuesser, EditGuesser, List, TextInput, Datagrid, T
 import jsonServerProvider from 'ra-data-json-server'
 import { EventList, EventCreate, EventEdit } from "./components/HistoryList";
 
-const URL = process.env.API_URL || 'http://localhost:8080'
+const URL = process.env.API_URL || "https://ok-admin-api.herokuapp.com" || 'http://localhost:8080'
 const dataProvider = jsonServerProvider(URL)
 const App = () => (
   <Admin dataProvider={dataProvider}>
