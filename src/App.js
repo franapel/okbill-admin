@@ -13,8 +13,9 @@ const App = () => (
   </Admin>
 )
 
-
 export default App
+
+
 
 const UserList = (props) => (
   <List filters={userFilters} pagination={null} {...props}>
@@ -23,8 +24,7 @@ const UserList = (props) => (
       <TextField source="name" />
     </Datagrid>
   </List>
-);
-
+)
 
 const userFilters = [
   <TextInput label="Search ID" source="id" alwaysOn />
