@@ -1,21 +1,34 @@
 import * as React from "react"
 import { Admin, Resource, ListGuesser, EditGuesser, List, TextInput, Datagrid, TextField } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server'
-import { EventList, EventCreate, EventEdit } from "./components/HistoryList";
+import { EventList  } from "./components/mapList";
 
-const URL = process.env.API_URL || "https://ok-admin-api.herokuapp.com" || 'http://localhost:8080'
+const URL = process.env.API_URL || 'http://localhost:8080'
 const dataProvider = jsonServerProvider(URL)
 const App = () => (
   <Admin dataProvider={dataProvider}>
     <Resource name="users" list={UserList} edit={EditGuesser} />
-    <Resource name="tables" list={ListGuesser} edit={EditGuesser} />
-    <Resource name="history" list={EventList} create={EventCreate} edit={EventEdit} />
+    <Resource name="tables" list={EventList} edit={EditGuesser} />
+    <Resource name="products" list={ListGuesser} edit={EditGuesser} />
+    <Resource name="orders" list={OrderList} edit={EditGuesser} />
   </Admin>
 )
 
 export default App
 
 
+
+
+const OrderList = (props) => (
+  <List pagination={null} {...props}>
+    <Datagrid>
+      <TextField source="id" />
+      <TextField source="table_id" />
+      <TextField source="done" />
+      <TextField source="date" />
+    </Datagrid>
+  </List>
+)
 
 const UserList = (props) => (
   <List filters={userFilters} pagination={null} {...props}>
@@ -25,7 +38,6 @@ const UserList = (props) => (
     </Datagrid>
   </List>
 )
-
 const userFilters = [
   <TextInput label="Search ID" source="id" alwaysOn />
 ]

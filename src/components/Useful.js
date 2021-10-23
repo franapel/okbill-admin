@@ -17,16 +17,16 @@ function getTableImgSrc(tableState) {
     let imgSrc
     switch (tableState) {
         case tableStatesPool[0].id:
-            imgSrc = "img/cuadro_azul.png"
+            imgSrc = "img/cuadro_azul.webp"
             break
         case tableStatesPool[1].id:
-            imgSrc = "img/cuadro_rojo.png"
+            imgSrc = "img/cuadro_verde.webp"
             break
         case tableStatesPool[2].id:
-            imgSrc = "img/cuadro_verde.png"
+            imgSrc = "img/cuadro_rojo.webp"
             break
         default:
-            imgSrc = "img/cuadro_roza.png"
+            imgSrc = "img/cuadro_vacio.webp"
             break
     }
     return imgSrc
