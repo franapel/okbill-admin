@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useGetList, useListContext, ReferenceField, TextField } from "react-admin"
-import { ImageList, ImageListItem, ClickAwayListener, Slide, Paper, Typography } from "@mui/material";
-import { makeStyles } from "@material-ui/styles";
-import { getTableImgSrc, getTimeAndMid } from "./Useful";
+import { ClickAwayListener, Slide, Paper, Typography } from "@mui/material";
+import { makeStyles } from "@material-ui/styles"
+import { getTimeAndMid } from "./Useful";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -10,25 +10,38 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { List as MuiList, ListItem } from "@mui/material"
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingIcon from '@mui/icons-material/Pending';
+import Grid from '@mui/material/Grid'
 
 const useStyles = makeStyles({
     list_container: {
         display: "flex",
         height: "70vh"
     },
-    image_list: {
-        width: "60%",
-        height: "fit-content",
-        margin: "auto"
+    table_grid: {
+        alignContent: "center",
+        padding: "0 5%"
+    },
+    table_grid_item: {
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+        padding: "0 5%"
+    },
+    chair: {
+        width: "22%",
+        aspectRatio: "1/1",
+        backgroundColor: "gainsboro",
+        position: "absolute",
+        borderRadius: "10%"
     },
     image_number: {
         position: "absolute",
         left: "50%",
-        bottom: "50%",
-        transform: "translate(-50%, 0)"
+        bottom: "50%"
     },
     slide: {
-        width: "30%",
+        width: "40%",
         height: "100%",
         position: "relative",
         top: -10,
@@ -36,10 +49,6 @@ const useStyles = makeStyles({
     },
 
     user_order_item: {
-        margin: 0,
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-around"
     }
 })
 
@@ -76,21 +85,36 @@ const TableMap = () => {
 
     return (
         <div className={classes.list_container}>
-            <ImageList className={classes.image_list} cols={4} gap={100}>
+            <Grid className={classes.table_grid} container columns={4}>
                 {ids.map(id =>
-                    <ImageListItem key={id}>
-                        <img
-                            src={getTableImgSrc(data[id].state)}
-                            alt="Mesa"
-                            onClick={() => handleClick(id)} />
-                        <div className={classes.image_number}>
+                    <Grid className={classes.table_grid_item} item xs={1} key={id} >
+                        <div style={{
+                            width: "10vw",
+                            backgroundColor: data[id].state === "free" ? "mediumseagreen" : "steelblue",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: "white",
+                            borderRadius: "20%",
+                            position: "relative",
+                            aspectRatio: "1/1"
+                        }} onClick={() => handleClick(id)} >
                             {id}
+                            <div className={classes.chair} style={{ top: "20%", right: "-25%" }} />
+                            <div className={classes.chair} style={{ top: "20%", left: "-25%" }} />
+                            <div className={classes.chair} style={{ bottom: "20%", right: "-25%" }} />
+                            <div className={classes.chair} style={{ bottom: "20%", left: "-25%" }} />
+                            <div className={classes.chair} style={{ top: "-25%", right: "20%" }} />
+                            <div className={classes.chair} style={{ top: "-25%", left: "20%" }} />
+                            <div className={classes.chair} style={{ bottom: "-25%", right: "20%" }} />
+                            <div className={classes.chair} style={{ bottom: "-25%", left: "20%" }} />
                         </div>
-                    </ImageListItem>
+                    </Grid>
                 )}
-            </ImageList>
+            </Grid>
 
-            {openTableDetail &&
+            {
+                openTableDetail &&
                 <ClickAwayListener onClickAway={handleClickAway}>
                     <Slide direction="left" in={openTableDetail} mountOnEnter unmountOnExit>
                         <Paper className={classes.slide} elevation={4}>
@@ -100,15 +124,15 @@ const TableMap = () => {
                             {orders[tableToShow.current_order] ?
                                 <>
                                     <Typography variant="body1" gutterBottom>
-                                        Hora de llegada: {
+                                        Llegada: {
                                             getTimeAndMid(orders[tableToShow.current_order].date).time + " " +
                                             getTimeAndMid(orders[tableToShow.current_order].date).mid
                                         }
                                     </Typography>
-                                    {orders[tableToShow.current_order].users.map(user => 
-                                        <UserExpandable orderUser={user} />
+                                    {orders[tableToShow.current_order].users.map(user =>
+                                        <UserExpandable key={user.user_id} orderUser={user} />
                                     )}
-                                    
+
                                 </>
                                 : <Typography variant="h6">Libre</Typography>
                             }
@@ -118,7 +142,7 @@ const TableMap = () => {
                 </ClickAwayListener>
             }
 
-        </div>
+        </div >
     )
 }
 
@@ -131,29 +155,40 @@ const UserExpandable = ({ orderUser }) => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    function isUserOrderPending() {
+        const incompleteOrder = orderUser.user_orders.find(order => !order.completed)
+        if (incompleteOrder) return true
+        else return false
+    }
+
     return <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
+            
         >
-            <ReferenceField record={orderUser} source="user_id" reference="users" link={false} sx={{ width: '33%', flexShrink: 0 }}>
-                <TextField source="name" />
-            </ReferenceField>
+            <div style={{ display: "flex", width: "100%",justifyContent: "space-between" }}>
+                <ReferenceField record={orderUser} source="user_id" reference="users" link={false}>
+                    <TextField source="name" />
+                </ReferenceField>
+                {isUserOrderPending() &&
+                <div style={{width: 12, height: 12, backgroundColor:"gold", borderRadius:"100%", alignSelf:"center"}}/>}
+            </div>
+
         </AccordionSummary>
         <AccordionDetails>
             <MuiList >
-                {console.log(orderUser.user_orders)}
-                {orderUser.user_orders.map(userOrder =>
-                    <ListItem className={classes.user_order_item} divider sx={{justifyContent: "space-between"}}>
+                {orderUser.user_orders.map((userOrder, i) =>
+                    <ListItem key={i} className={classes.user_order_item} divider style={{ justifyContent: "space-between" }}>
                         <Typography variant="body1">{getTimeAndMid(userOrder.date).time}</Typography>
                         <Typography variant="body1">{userOrder.quantity}</Typography>
                         <ReferenceField record={userOrder} source="product_id" reference="products" sx={{ width: '33%', flexShrink: 0 }}>
-                            <Typography variant="body1"><TextField source="name" /></Typography>
+                            <TextField source="name" />
                         </ReferenceField>
                         {userOrder.completed ?
-                            <CheckCircleOutlineIcon color="success" fontSize="large"/>
-                            : <PendingIcon color="warning" fontSize="large"/> }
+                            <CheckCircleOutlineIcon color="success" fontSize="large" />
+                            : <PendingIcon color="warning" fontSize="large" />}
                     </ListItem>
                 )}
 

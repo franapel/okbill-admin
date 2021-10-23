@@ -3,7 +3,8 @@ import { Admin, Resource, ListGuesser, EditGuesser, List, TextInput, Datagrid, T
 import jsonServerProvider from 'ra-data-json-server'
 import { EventList  } from "./components/mapList";
 
-const URL = process.env.API_URL || 'http://localhost:8080'
+const URL = process.env.REACT_APP_API_URL || 'http://localhost:8080'
+console.log("API path: " + URL)
 const dataProvider = jsonServerProvider(URL)
 const App = () => (
   <Admin dataProvider={dataProvider}>
