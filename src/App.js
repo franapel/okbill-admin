@@ -1,24 +1,21 @@
 import * as React from "react"
 import { Admin, Resource, ListGuesser, EditGuesser, List, TextInput, Datagrid, TextField } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server'
-import { EventList  } from "./components/mapList";
+import TableList from "./components/tables/TableList"
 
 const URL = process.env.REACT_APP_API_URL || 'http://localhost:8080'
-console.log("API path: " + URL)
 const dataProvider = jsonServerProvider(URL)
+
 const App = () => (
   <Admin dataProvider={dataProvider}>
     <Resource name="users" list={UserList} edit={EditGuesser} />
-    <Resource name="tables" list={EventList} edit={EditGuesser} />
+    <Resource name="tables" list={TableList} edit={EditGuesser} />
     <Resource name="products" list={ListGuesser} edit={EditGuesser} />
     <Resource name="orders" list={OrderList} edit={EditGuesser} />
   </Admin>
 )
 
 export default App
-
-
-
 
 const OrderList = (props) => (
   <List pagination={null} {...props}>

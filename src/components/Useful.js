@@ -32,10 +32,22 @@ function getTableImgSrc(tableState) {
     return imgSrc
 }
 
-function getTimeAndMid(dateString) {
-    const date = new Date(dateString)
-    const minutes = date.getMinutes()
-    let hours = date.getHours()
+function getTime(dateString) {
+    const fullDate = new Date(dateString)
+
+    const day = fullDate.getDate()
+    const month = fullDate.getMonth() + 1
+    const year = fullDate.getFullYear().toString().substr(-2)
+
+    let preZeroDay = ""
+    let preZeroMonth = ""
+    if (day < 10) preZeroDay = "0"
+    if (month < 10) preZeroMonth = "0"
+
+    const date = preZeroDay + day + "-" + preZeroMonth + month + "-" + year
+
+    const minutes = fullDate.getMinutes()
+    let hours = fullDate.getHours()
     let mid = "AM"
     if (hours >= 12) {
         mid = "PM"
@@ -45,8 +57,10 @@ function getTimeAndMid(dateString) {
     let preZeroMinute = ""
     if (hours < 10) preZeroHour = "0"
     if (minutes < 10) preZeroMinute = "0"
+
     const time = preZeroHour + hours + ":" + preZeroMinute + minutes
-    return { time, mid }
+    const fullTime = preZeroHour + hours + ":" + preZeroMinute + minutes + " " + mid
+    return { date, time, fullTime }
 }
 
 function getLatestTableEvent(table_id, history) {
@@ -60,4 +74,5 @@ function getLatestTableEvent(table_id, history) {
     else return emptyTableEvent
 }
 
-export { emptyTableEvent, tableStatesPool, getTableImgSrc, getTimeAndMid, getLatestTableEvent }
+export { emptyTableEvent, tableStatesPool, getTableImgSrc, getTime
+, getLatestTableEvent }
