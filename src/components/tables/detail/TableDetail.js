@@ -11,6 +11,7 @@ const useStyles = makeStyles({
         width: "50%",
         height: "100%",
         padding: "15px 30px",
+        overflowY: "auto"
     }
 })
 

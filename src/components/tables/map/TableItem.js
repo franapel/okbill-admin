@@ -1,15 +1,9 @@
 import { useGetList } from "react-admin"
 import { makeStyles } from "@material-ui/styles"
-import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
-import MoneyOffIcon from '@mui/icons-material/MoneyOff';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import CancelIcon from '@mui/icons-material/Cancel';
-import PendingIcon from '@mui/icons-material/Pending'
-import PaymentIcon from '@mui/icons-material/Payment';
-import { fabClasses } from "@mui/material";
 
 // import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 // import PendingIcon from '@mui/icons-material/Pending'
+import Icons from "../../Icons";
 
 const useStyles = makeStyles({
     table: {
@@ -31,7 +25,10 @@ const useStyles = makeStyles({
     },
     icon_container: {
         position: "absolute",
-        top: "130%"
+        top: "130%",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center"
     }
 })
 
@@ -47,10 +44,12 @@ const TableItem = ({ tableData, handleTableClick }) => {
         const order = orders[tableData.current_order]
         if (order) {
             hasReqCancel = order.users.find(user => {
-                if(user.user_orders.find(userOrder => userOrder.req_cancel)) return true
+                if (user.user_orders.find(userOrder => userOrder.req_cancel)) return true
+                else return false
             })
             const notServed = order.users.find(user => {
-                if(user.user_orders.find(userOrder => !userOrder.served)) return true
+                if (user.user_orders.find(userOrder => !userOrder.served)) return true
+                else return false
             })
             if (notServed) isServed = false
             else isServed = true
@@ -88,14 +87,15 @@ const TableItem = ({ tableData, handleTableClick }) => {
                 <div className={classes.chair} style={{ bottom: "-25%", left: "20%" }} />
             </div>
 
-            { tableData.state === "seated" && <div className={classes.icon_container} >
-                {orderState().hasReqCancel &&  <CancelIcon sx={{ fontSize: "2.4vw" }} color="error"/>}
-                {userState().reqAttention && <EmojiPeopleIcon sx={{ fontSize: "2.4vw" }} color="secondary"/>}
-                {orderState().isServed === false &&  <PendingIcon sx={{ fontSize: "2.4vw" }} color="warning" />}                
-                {userState().reqPay && <PaymentIcon sx={{ fontSize: "2.4vw" }} color="primary"/>}
-                {userState().notPayed ? <MoneyOffIcon sx={{ fontSize: "2.4vw" }}/>
-                    : <AttachMoneyIcon sx={{ fontSize: "2.4vw" }} color="success" />}
-            </div>}
+            {tableData.state === "seated" &&
+                <div className={classes.icon_container} >
+                    {orderState().hasReqCancel && <Icons icon="cancel" fontSize="2.8vw" msg="Quiere abortar servicio"/>}
+                    {userState().reqPay && <Icons icon="pay" fontSize="2.8vw" msg="Requiere pagar"/>}
+                    {userState().reqAttention && <Icons icon="attention" fontSize="2.8vw" msg="Requiere atención"/>}
+                    {orderState().isServed === false && <Icons icon="pending" fontSize="2.8vw" msg="Servicio pendiente"/>}                    
+                    {userState().notPayed ? <Icons icon="notpayed" fontSize="2.8vw" msg="No ha pagado"/>
+                        : <Icons icon="payed" fontSize="2.8vw" msg="Abortar"/>}
+                </div>}
         </div>
     )
 }
