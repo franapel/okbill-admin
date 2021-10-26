@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     slide: {
         position: "relative",
         top: -10,
-        width: "40%",
+        width: "50%",
         height: "100%",
         padding: "15px 30px",
     }
