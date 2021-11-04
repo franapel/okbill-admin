@@ -75,12 +75,12 @@ const UserItem = ({ user }) => {
                     <TextField source="name" />
                 </ReferenceField>
                 <div className={classes.icon_container} >
-                    {orderState().hasReqCancel && <Icons icon="cancel" />}
-                    {user.request_pay && <Icons icon="pay" />}
-                    {user.request_attention && <Icons icon="attention" />}
-                    {orderState().isServed === false && <Icons icon="pending" />}
-                    {user.payed ? <Icons icon="payed" />
-                        : <Icons icon="notpayed" />}
+                    {orderState().hasReqCancel && <Icons icon="cancel" msg="Anular" />}
+                    {user.request_pay && <Icons icon="pay" msg="Pagar" />}
+                    {user.request_attention && <Icons icon="attention" msg="Atención"/>}
+                    {orderState().isServed === false && <Icons icon="pending" msg="Pendiente" />}
+                    {user.payed ? <Icons icon="payed" msg="Pagado" />
+                        : <Icons icon="notpayed" msg="Impago" />}
                 </div>
             </div>
         </AccordionSummary>

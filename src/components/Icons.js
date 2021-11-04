@@ -13,11 +13,12 @@ const Popover = ({ msg }) => {
             width: "max-content",
             height: "min-content",
             position: "absolute",
-            top: "-75%",
-            padding: "2px 7px",
+            top: "-90%",
+            padding: "0 7px",
             borderRadius: "5%",
             border: "1px solid",
-            backgroundColor: "white"
+            backgroundColor: "white",
+            zIndex: 2
         }}
         >
             {msg}

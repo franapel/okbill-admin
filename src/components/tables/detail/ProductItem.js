@@ -22,10 +22,10 @@ const ProductItem = ({ productOrder }) => {
                     <TextField source="name" />
                 </ReferenceField>
                 <div style={{ display: "flex", marginLeft: "auto" }}>
-                    {productOrder.req_cancel && <Icons icon="cancel"/>}
+                    {productOrder.req_cancel && <Icons icon="cancel" msg="Anular"/>}
                     {productOrder.served ?
-                        <Icons icon="served" />
-                        : <Icons icon="pending" />}
+                        <Icons icon="served" msg="Servido"/>
+                        : <Icons icon="pending" msg="Pendiente"/>}
                 </div>
             </div>
             <div style={{width: "100%", display: "flex"}}>
